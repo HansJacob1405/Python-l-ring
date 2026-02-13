@@ -5,14 +5,21 @@ attempts = 0
 
 print("Jeg tænker på et tal mellem 1 og 20.")
 
-while True:
-    guess_str = input("Gæt et tal: ")
+max_attempts = 6
+
+while attempts < max_attempts:
+    guess_str = input("Gæt et tal: ").strip()
 
     if not guess_str.isdigit():
-        print("Skriv et helt tal, fx 7.")
+        print("Skriv et helt tal mellem 1 og 20, fx 7.")
         continue
 
     guess = int(guess_str)
+
+    if not (1 <= guess <= 20):
+        print("Tallet skal være mellem 1 og 20.")
+        continue
+
     attempts += 1
 
     if guess < secret:
@@ -22,7 +29,5 @@ while True:
     else:
         print(f"Korrekt! Du brugte {attempts} forsøg.")
         break
-    
-    if attempts > 5:
-       print(f"Du har haft {attempts} forsøg hvorfor du ikke får flere forsøg. Det rigtige tal er {secret}")
-       break
+else:
+    print(f"Du har haft {max_attempts} forsøg, så du får ikke flere. Det rigtige tal var {secret}.")
