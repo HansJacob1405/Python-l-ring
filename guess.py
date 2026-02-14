@@ -13,12 +13,13 @@ def get_guess():
     
         guess_str = input("Gæt et tal: ").strip()
 
-        if guess_str.isdigit():
-           guess_given = True
-           return int(guess_str) 
-        
-        else: print("Skriv et helt tal mellem 1 og 20, fx 7.")
-        continue
+        try:  
+            guess = int(guess_str)
+            guess_given = True
+            return int(guess_str)
+        except ValueError:
+            print("Skriv et helt tal mellem 1 og 20, fx 7.")
+            continue
 
     
 def play_game():
@@ -32,8 +33,6 @@ def play_game():
     print(f"Det rigtige tal var {secret}.")
 
     print("Jeg tænker på et tal mellem 1 og 20.")
-
-   
 
     while attempts < max_attempts:
 
