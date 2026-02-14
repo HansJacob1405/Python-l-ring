@@ -7,25 +7,38 @@ def generate_secret():
 
 def get_guess():
 
+    guess_given = False
+
+    while not guess_given:
+    
+        guess_str = input("Gæt et tal: ").strip()
+
+        if guess_str.isdigit():
+           guess_given = True
+           return int(guess_str) 
+        
+        else: print("Skriv et helt tal mellem 1 og 20, fx 7.")
+        continue
+
+    
+def play_game():
+
     attempts = 0
 
     max_attempts = 6
 
     secret = generate_secret()
 
-    print(f"Det hemmelige tal er {secret}")
+    print(f"Det rigtige tal var {secret}.")
 
     print("Jeg tænker på et tal mellem 1 og 20.")
 
+   
+
     while attempts < max_attempts:
-        guess_str = input("Gæt et tal: ").strip()
 
-        if not guess_str.isdigit():
-            print("Skriv et helt tal mellem 1 og 20, fx 7.")
-            continue
-
-        guess = int(guess_str)
-
+        guess = get_guess()
+         
         if not (1 <= guess <= 20):
             print("Tallet skal være mellem 1 og 20.")
             continue
@@ -43,11 +56,4 @@ def get_guess():
         print(f"Du har haft {max_attempts} forsøg, så du får ikke flere. Det rigtige tal var {secret}.")
 
 
-def play_game():
-    get_guess()
-
-
 play_game()
-
-
-
