@@ -1,45 +1,46 @@
 import random
 
 
-def generate_secret(low,high):
-    return random.randint(low, high)
+def generate_secret(low: int, high: int, rng: random.Random | None = None) -> int:
+    """Generate a secret number in the inclusive range [low, high]."""
+    rng = rng or random
+    return rng.randint(low, high)
 
 
-def get_guess(low,high):
+def get_guess(low: int, high: int) -> int:
+    """Prompt until the user enters a valid integer in the inclusive range [low, high]."""
+    while True:
+        text = input(f"Gæt et tal ({low}-{high}): ").strip()
 
-    guess_given = False
-
-    while not guess_given:
-
-        guess_str = input("Gæt et tal: ").strip()
-
-        try:  
-            guess = int(guess_str)
-            
-            if not (low <= guess <= high):
-             print("Tallet skal være mellem {low} og {high}.")
-             continue
-            else: 
-             guess_given = True
-             return int(guess_str)
+        try:
+            guess = int(text)
         except ValueError:
-            print("Skriv et helt tal mellem {low} og {high}")
+            print(f"Skriv et helt tal mellem {low} og {high}.")
             continue
 
-def play_game(low,high,max_attempts):
+        if not (low <= guess <= high):
+            print(f"Tallet skal være mellem {low} og {high}.")
+            continue
 
+        return guess
+
+
+def play_game(low: int = 1, high: int = 20, max_attempts: int = 6, debug: bool = False) -> None:
+    """Run the guessing game."""
+    if low > high:
+        raise ValueError("low must be <= high")
+    if max_attempts <= 0:
+        raise ValueError("max_attempts must be >= 1")
+
+    secret = generate_secret(low, high)
     attempts = 0
 
-    secret = generate_secret(low,high)
-
-    print(f"Det rigtige tal var {secret}.")
-
-    print("Jeg tænker på et tal mellem {low} og {high}.")
+    print(f"Jeg tænker på et tal mellem {low} og {high}.")
+    if debug:
+        print(f"[DEBUG] Secret: {secret}")
 
     while attempts < max_attempts:
-
-        guess = get_guess(low,high)
-         
+        guess = get_guess(low, high)
         attempts += 1
 
         if guess < secret:
@@ -48,18 +49,18 @@ def play_game(low,high,max_attempts):
             print("For højt!")
         else:
             print(f"Korrekt! Du brugte {attempts} forsøg.")
-            break
-    else:
-        print(f"Du har haft {max_attempts} forsøg, så du får ikke flere. Det rigtige tal var {secret}.")
+            return
+
+        remaining = max_attempts - attempts
+        if remaining > 0:
+            print(f"Du har {remaining} forsøg tilbage.")
+
+    print(f"Du har brugt {max_attempts} forsøg. Det rigtige tal var {secret}.")
 
 
 if __name__ == "__main__":
+    play_game()
 
-    low=1
-    high = 20
-    max_attempts =6
-
-    play_game(low, high, max_attempts)
 
 
 
