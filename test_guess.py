@@ -3,6 +3,7 @@ import pytest
 from guess import generate_secret, get_guess, play_game
 
 
+
 def test_generate_secret_within_range():
     low, high = 1, 10
     for _ in range(200):
